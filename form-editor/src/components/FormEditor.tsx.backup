@@ -1,0 +1,1175 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Form, FormField } from '@/shared/types';
+import { generateId } from '@/shared/utils/dataManager';
+import FormPreview from './FormPreview';
+import {
+  ArrowLeft,
+  Save,
+  Eye,
+  Plus,
+  Type,
+  FileText,
+  List,
+  Radio,
+  CheckSquare,
+  GripVertical,
+  Trash2,
+  Info,
+  Copy,
+  ArrowUp,
+  ArrowDown
+} from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import FadeIn from '@/components/animations/FadeIn';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+interface FormEditorProps {
+  form: Form | null;
+  onSave: (form: Form) => void;
+  onCancel: () => void;
+}
+
+interface SortableOptionProps {
+  option: string;
+  index: number;
+  fieldId: string;
+  onUpdate: (fieldId: string, index: number, value: string) => void;
+  onDelete: (fieldId: string, index: number) => void;
+}
+
+function SortableOption({ option, index, fieldId, onUpdate, onDelete }: SortableOptionProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: `option-${fieldId}-${index}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center space-x-2"
+    >
+      <div
+        {...attributes}
+        {...listeners}
+        className="cursor-move p-1 hover:bg-gray-100 rounded"
+      >
+        <GripVertical className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+      </div>
+      <Input
+        value={option}
+        onChange={(e) => onUpdate(fieldId, index, e.target.value)}
+        className="h-8 sm:h-9 flex-1"
+        placeholder={`選択肢 ${index + 1}`}
+      />
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => onDelete(fieldId, index)}
+        className="h-8 w-8 p-0 flex-shrink-0 hover:bg-red-100 hover:text-red-600"
+      >
+        <Trash2 className="h-3 w-3" />
+      </Button>
+    </div>
+  );
+}
+
+export default function FormEditor({ form, onSave, onCancel }: FormEditorProps) {
+  const [currentForm, setCurrentForm] = useState<Form | null>(form);
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+
+  // ドラッグアンドドロップのセンサー設定
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  const [highlightedField, setHighlightedField] = useState<string | null>(null);
+  const [expandedField, setExpandedField] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentForm(form);
+  }, [form]);
+
+  if (!currentForm) return null;
+
+  const handleFormChange = (updates: Partial<Form>) => {
+    setCurrentForm({ ...currentForm, ...updates });
+  };
+
+  const handleFieldAdd = (type: string) => {
+    const newField: FormField = {
+      id: generateId(),
+      type: type as FormField['type'],
+      label: '新しい項目',
+      placeholder: '',
+      required: false,
+      order: currentForm.fields.length,
+      options: type === 'select' || type === 'radio' || type === 'checkbox' ? ['選択肢1', '選択肢2'] : undefined
+    };
+
+    handleFormChange({
+      fields: [...currentForm.fields, newField]
+    });
+
+    // 追加した項目を選択状態にして、その項目にフォーカス
+    setTimeout(() => {
+      setEditingField(newField.id);
+      setHighlightedField(newField.id);
+      setExpandedField(newField.id);
+
+      // 追加した項目が画面内に表示されるようにスクロール
+      const addedField = document.querySelector(`[data-field-id="${newField.id}"]`);
+      if (addedField) {
+        addedField.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+
+      // ハイライト効果を3秒後に解除
+      setTimeout(() => {
+        setHighlightedField(null);
+      }, 3000);
+    }, 100);
+  };
+
+  const handleFieldUpdate = (fieldId: string, updates: Partial<FormField>) => {
+    const updatedFields = currentForm.fields.map(field =>
+      field.id === fieldId ? { ...field, ...updates } : field
+    );
+    handleFormChange({ fields: updatedFields });
+  };
+
+  const handleFieldDelete = (fieldId: string) => {
+    const updatedFields = currentForm.fields.filter(field => field.id !== fieldId);
+    handleFormChange({ fields: updatedFields });
+  };
+
+  const handleSave = () => {
+    onSave(currentForm);
+  };
+
+  const fieldTypes = [
+    { type: 'text', label: 'テキスト', icon: Type, description: '1行のテキスト入力' },
+    { type: 'textarea', label: '長文テキスト', icon: FileText, description: '複数行のテキスト入力' },
+    { type: 'select', label: '選択肢', icon: List, description: 'ドロップダウン選択' },
+    { type: 'radio', label: 'ラジオボタン', icon: Radio, description: '単一選択' },
+    { type: 'checkbox', label: 'チェックボックス', icon: CheckSquare, description: '複数選択' }
+  ];
+
+  const getFieldIcon = (type: string) => {
+    const fieldType = fieldTypes.find(ft => ft.type === type);
+    return fieldType ? fieldType.icon : Type;
+  };
+
+  const duplicateField = (fieldId: string) => {
+    const field = currentForm.fields.find(f => f.id === fieldId);
+    if (!field) return;
+
+    const newField: FormField = {
+      ...field,
+      id: generateId(),
+      label: `${field.label} (コピー)`,
+      order: currentForm.fields.length
+    };
+
+    handleFormChange({
+      fields: [...currentForm.fields, newField]
+    });
+  };
+
+  const moveField = (fieldId: string, direction: 'up' | 'down') => {
+    const currentIndex = currentForm.fields.findIndex(f => f.id === fieldId);
+    if (currentIndex === -1) return;
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= currentForm.fields.length) return;
+
+    const newFields = [...currentForm.fields];
+    [newFields[currentIndex], newFields[newIndex]] = [newFields[newIndex], newFields[currentIndex]];
+
+    // order を更新
+    newFields.forEach((field, index) => {
+      field.order = index;
+    });
+
+    handleFormChange({ fields: newFields });
+  };
+
+  // 選択肢の並び替えを処理する関数
+  const handleOptionDragEnd = (event: DragEndEvent, fieldId: string) => {
+    const { active, over } = event;
+
+    if (!over || !currentForm) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    if (activeId === overId) return;
+
+    const field = currentForm.fields.find(f => f.id === fieldId);
+    if (!field || !field.options) return;
+
+    const oldIndex = field.options.findIndex((_, index) => `option-${fieldId}-${index}` === activeId);
+    const newIndex = field.options.findIndex((_, index) => `option-${fieldId}-${index}` === overId);
+
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const newOptions = arrayMove(field.options, oldIndex, newIndex);
+    handleFieldUpdate(fieldId, { options: newOptions });
+  };
+
+  // 選択肢の更新を処理する関数
+  const handleOptionUpdate = (fieldId: string, optionIndex: number, value: string) => {
+    if (!currentForm) return;
+
+    const field = currentForm.fields.find(f => f.id === fieldId);
+    if (!field || !field.options) return;
+
+    const newOptions = [...field.options];
+    newOptions[optionIndex] = value;
+    handleFieldUpdate(fieldId, { options: newOptions });
+  };
+
+  // 選択肢の削除を処理する関数
+  const handleOptionDelete = (fieldId: string, optionIndex: number) => {
+    if (!currentForm) return;
+
+    const field = currentForm.fields.find(f => f.id === fieldId);
+    if (!field || !field.options) return;
+
+    const newOptions = field.options.filter((_, i) => i !== optionIndex);
+    handleFieldUpdate(fieldId, { options: newOptions });
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50/50">
+      {/* ヘッダー */}
+      <FadeIn>
+        <div className="sticky top-0 z-40 bg-white border-b shadow-sm">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4">
+              <div className="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+                <Button
+                  variant="ghost"
+                  onClick={onCancel}
+                  className="flex items-center space-x-2 h-9 px-3"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span className="text-sm">戻る</span>
+                </Button>
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-lg sm:text-xl font-bold truncate">フォーム編集</h1>
+                  <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">直感的にフォームを作成・編集</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPreview(!showPreview)}
+                  className="flex items-center space-x-2 h-9 flex-1 sm:flex-none"
+                >
+                  <Eye className="h-4 w-4" />
+                  <span className="text-sm">{showPreview ? '編集' : 'プレビュー'}</span>
+                </Button>
+                <Button
+                  onClick={handleSave}
+                  className="flex items-center space-x-2 h-9 flex-1 sm:flex-none"
+                >
+                  <Save className="h-4 w-4" />
+                  <span className="text-sm">保存</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+
+      {/* メインコンテンツ */}
+      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
+          {/* 左側: フォーム編集エリア */}
+          <div className="xl:col-span-3 space-y-4 sm:space-y-6">
+            {/* フォーム基本情報 */}
+            <FadeIn delay={0.1}>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center space-x-2">
+                    <Info className="h-4 w-4 text-blue-600" />
+                    <CardTitle className="text-lg">基本情報</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="form-name" className="text-sm font-medium">
+                        フォーム名 <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="form-name"
+                        type="text"
+                        value={currentForm.name}
+                        onChange={(e) => handleFormChange({ name: e.target.value })}
+                        placeholder="フォーム名を入力"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="form-description" className="text-sm font-medium">説明</Label>
+                      <Input
+                        id="form-description"
+                        type="text"
+                        value={currentForm.description || ''}
+                        onChange={(e) => handleFormChange({ description: e.target.value })}
+                        placeholder="フォームの説明を入力"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </FadeIn>
+
+
+            {/* 項目リスト */}
+            <FadeIn delay={0.3}>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg">フォーム項目</CardTitle>
+                      <CardDescription>{currentForm.fields.length} 個の項目</CardDescription>
+                    </div>
+                    <Badge variant={currentForm.settings.autoReply ? "default" : "outline"}>
+                      {currentForm.settings.autoReply ? "自動返信ON" : "自動返信OFF"}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {currentForm.fields.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p className="text-lg font-medium mb-2">項目がありません</p>
+                      <p className="text-sm">下の「項目を追加」ボタンから項目を追加してください</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {currentForm.fields.map((field, index) => {
+                        const Icon = getFieldIcon(field.type);
+                        const isEditing = editingField === field.id;
+                        const isHighlighted = highlightedField === field.id;
+
+                        return (
+                          <motion.div
+                            key={field.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            data-field-item
+                            data-field-id={field.id}
+                          >
+                            <Card
+                              className={`cursor-pointer transition-all duration-200 ${isHighlighted
+                                ? 'ring-2 ring-green-500 shadow-lg bg-green-50/50'
+                                : expandedField === field.id
+                                  ? 'ring-2 ring-primary shadow-md'
+                                  : 'hover:shadow-md hover:border-primary/20'
+                                }`}
+                              onClick={() => {
+                                if (expandedField === field.id) {
+                                  setExpandedField(null);
+                                } else {
+                                  setExpandedField(field.id);
+                                }
+                              }}
+                            >
+                              <CardContent className="p-3 sm:p-4">
+                                <div className="flex items-center space-x-2 sm:space-x-3">
+                                  <GripVertical className="h-4 w-4 text-muted-foreground cursor-move flex-shrink-0" />
+                                  <Icon className="h-4 w-4 text-primary flex-shrink-0" />
+
+                                  {isEditing ? (
+                                    <div className="flex-1 min-w-0">
+                                      <Input
+                                        value={field.label}
+                                        onChange={(e) => handleFieldUpdate(field.id, { label: e.target.value })}
+                                        onBlur={() => setEditingField(null)}
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') setEditingField(null);
+                                        }}
+                                        className="h-8"
+                                        autoFocus
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="flex-1 min-w-0">
+                                      <div
+                                        className="font-medium hover:text-primary cursor-pointer truncate"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setEditingField(field.id);
+                                        }}
+                                      >
+                                        {field.label}
+                                      </div>
+                                      <div className="text-xs sm:text-sm text-muted-foreground truncate">
+                                        {fieldTypes.find(ft => ft.type === field.type)?.label}
+                                        {field.required && <span className="text-red-500 ml-1">*</span>}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  <div className="flex items-center space-x-1 flex-shrink-0">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveField(field.id, 'up');
+                                      }}
+                                      disabled={index === 0}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <ArrowUp className="h-3 w-3" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveField(field.id, 'down');
+                                      }}
+                                      disabled={index === currentForm.fields.length - 1}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <ArrowDown className="h-3 w-3" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        duplicateField(field.id);
+                                      }}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <Copy className="h-3 w-3" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleFieldDelete(field.id);
+                                      }}
+                                      className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                                    >
+                                      <Trash2 className="h-3 w-3" />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+
+                            {/* インライン編集パネル */}
+                            <AnimatePresence>
+                              {expandedField === field.id && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <Card className="mt-2 border-l-4 border-l-primary bg-primary/5">
+                                    <CardHeader className="pb-3">
+                                      <CardTitle className="text-sm font-medium flex items-center space-x-2">
+                                        <Icon className="h-4 w-4" />
+                                        <span>項目設定</span>
+                                      </CardTitle>
+                                      <CardDescription className="text-xs">
+                                        選択した項目の詳細設定を行います
+                                      </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                      <div>
+                                        <Label className="text-xs sm:text-sm font-medium">ラベル</Label>
+                                        <Input
+                                          value={field.label}
+                                          onChange={(e) => handleFieldUpdate(field.id, { label: e.target.value })}
+                                          className="h-8 sm:h-9 mt-1"
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <Label className="text-xs sm:text-sm font-medium">プレースホルダー</Label>
+                                        <Input
+                                          value={field.placeholder || ''}
+                                          onChange={(e) => handleFieldUpdate(field.id, { placeholder: e.target.value })}
+                                          className="h-8 sm:h-9 mt-1"
+                                        />
+                                      </div>
+
+                                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                        <div className="space-y-0.5">
+                                          <Label
+                                            htmlFor={`required-${field.id}`}
+                                            className="text-sm font-medium cursor-pointer"
+                                          >
+                                            必須項目
+                                          </Label>
+                                          <p className="text-xs text-muted-foreground">
+                                            この項目を必須入力にします
+                                          </p>
+                                        </div>
+                                        <Switch
+                                          id={`required-${field.id}`}
+                                          checked={field.required}
+                                          onCheckedChange={(checked: boolean) => handleFieldUpdate(field.id, { required: checked })}
+                                        />
+                                      </div>
+
+                                      {/* バリデーション設定 */}
+                                      {field.type === 'text' && (
+                                        <div className="space-y-3">
+                                          <Label className="text-xs sm:text-sm font-medium">バリデーション設定</Label>
+                                          <div className="space-y-2">
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`minLength-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  最小文字数
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  入力文字数の最小値を設定します
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`minLength-${field.id}`}
+                                                checked={field.validation?.minLength ? true : false}
+                                                onCheckedChange={(checked: boolean) => {
+                                                  const validation = field.validation || {};
+                                                  if (checked) {
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: { ...validation, minLength: 1 }
+                                                    });
+                                                  } else {
+                                                    const { minLength: _, ...rest } = validation;
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: Object.keys(rest).length > 0 ? rest : undefined
+                                                    });
+                                                  }
+                                                }}
+                                              />
+                                            </div>
+                                            {field.validation?.minLength && (
+                                              <Input
+                                                type="number"
+                                                value={field.validation.minLength}
+                                                onChange={(e) => {
+                                                  const validation = field.validation || {};
+                                                  handleFieldUpdate(field.id, {
+                                                    validation: { ...validation, minLength: parseInt(e.target.value) || 1 }
+                                                  });
+                                                }}
+                                                className="h-8 sm:h-9"
+                                                placeholder="最小文字数"
+                                              />
+                                            )}
+
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`maxLength-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  最大文字数
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  入力文字数の最大値を設定します
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`maxLength-${field.id}`}
+                                                checked={field.validation?.maxLength ? true : false}
+                                                onCheckedChange={(checked: boolean) => {
+                                                  const validation = field.validation || {};
+                                                  if (checked) {
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: { ...validation, maxLength: 100 }
+                                                    });
+                                                  } else {
+                                                    const { maxLength: _, ...rest } = validation;
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: Object.keys(rest).length > 0 ? rest : undefined
+                                                    });
+                                                  }
+                                                }}
+                                              />
+                                            </div>
+                                            {field.validation?.maxLength && (
+                                              <Input
+                                                type="number"
+                                                value={field.validation.maxLength}
+                                                onChange={(e) => {
+                                                  const validation = field.validation || {};
+                                                  handleFieldUpdate(field.id, {
+                                                    validation: { ...validation, maxLength: parseInt(e.target.value) || 100 }
+                                                  });
+                                                }}
+                                                className="h-8 sm:h-9"
+                                                placeholder="最大文字数"
+                                              />
+                                            )}
+
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`pattern-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  メール形式
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  メールアドレスの形式をチェックします
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`pattern-${field.id}`}
+                                                checked={field.validation?.pattern ? true : false}
+                                                onCheckedChange={(checked: boolean) => {
+                                                  const validation = field.validation || {};
+                                                  if (checked) {
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: { ...validation, pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$' }
+                                                    });
+                                                  } else {
+                                                    const { pattern: _, ...rest } = validation;
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: Object.keys(rest).length > 0 ? rest : undefined
+                                                    });
+                                                  }
+                                                }}
+                                              />
+                                            </div>
+                                            {field.validation?.pattern && (
+                                              <Input
+                                                value={field.validation.pattern}
+                                                onChange={(e) => {
+                                                  const validation = field.validation || {};
+                                                  handleFieldUpdate(field.id, {
+                                                    validation: { ...validation, pattern: e.target.value }
+                                                  });
+                                                }}
+                                                className="h-8 sm:h-9"
+                                                placeholder="正規表現パターン"
+                                              />
+                                            )}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {field.type === 'textarea' && (
+                                        <div className="space-y-3">
+                                          <Label className="text-xs sm:text-sm font-medium">バリデーション設定</Label>
+                                          <div className="space-y-2">
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`textarea-minLength-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  最小文字数
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  入力文字数の最小値を設定します
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`textarea-minLength-${field.id}`}
+                                                checked={field.validation?.minLength ? true : false}
+                                                onCheckedChange={(checked: boolean) => {
+                                                  const validation = field.validation || {};
+                                                  if (checked) {
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: { ...validation, minLength: 10 }
+                                                    });
+                                                  } else {
+                                                    const { minLength: _, ...rest } = validation;
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: Object.keys(rest).length > 0 ? rest : undefined
+                                                    });
+                                                  }
+                                                }}
+                                              />
+                                            </div>
+                                            {field.validation?.minLength && (
+                                              <Input
+                                                type="number"
+                                                value={field.validation.minLength}
+                                                onChange={(e) => {
+                                                  const validation = field.validation || {};
+                                                  handleFieldUpdate(field.id, {
+                                                    validation: { ...validation, minLength: parseInt(e.target.value) || 10 }
+                                                  });
+                                                }}
+                                                className="h-8 sm:h-9"
+                                                placeholder="最小文字数"
+                                              />
+                                            )}
+
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`textarea-maxLength-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  最大文字数
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  入力文字数の最大値を設定します
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`textarea-maxLength-${field.id}`}
+                                                checked={field.validation?.maxLength ? true : false}
+                                                onCheckedChange={(checked: boolean) => {
+                                                  const validation = field.validation || {};
+                                                  if (checked) {
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: { ...validation, maxLength: 1000 }
+                                                    });
+                                                  } else {
+                                                    const { maxLength: _, ...rest } = validation;
+                                                    handleFieldUpdate(field.id, {
+                                                      validation: Object.keys(rest).length > 0 ? rest : undefined
+                                                    });
+                                                  }
+                                                }}
+                                              />
+                                            </div>
+                                            {field.validation?.maxLength && (
+                                              <Input
+                                                type="number"
+                                                value={field.validation.maxLength}
+                                                onChange={(e) => {
+                                                  const validation = field.validation || {};
+                                                  handleFieldUpdate(field.id, {
+                                                    validation: { ...validation, maxLength: parseInt(e.target.value) || 1000 }
+                                                  });
+                                                }}
+                                                className="h-8 sm:h-9"
+                                                placeholder="最大文字数"
+                                              />
+                                            )}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {(field.type === 'select' || field.type === 'radio' || field.type === 'checkbox') && (
+                                        <div className="space-y-3">
+                                          <Label className="text-xs sm:text-sm font-medium">選択肢設定</Label>
+                                          <DndContext
+                                            sensors={sensors}
+                                            collisionDetection={closestCenter}
+                                            onDragEnd={(event) => handleOptionDragEnd(event, field.id)}
+                                          >
+                                            <SortableContext
+                                              items={field.options?.map((_, index) => `option-${field.id}-${index}`) || []}
+                                              strategy={verticalListSortingStrategy}
+                                            >
+                                              <div className="space-y-2">
+                                                {field.options?.map((option, optionIndex) => (
+                                                  <SortableOption
+                                                    key={`option-${field.id}-${optionIndex}`}
+                                                    option={option}
+                                                    index={optionIndex}
+                                                    fieldId={field.id}
+                                                    onUpdate={handleOptionUpdate}
+                                                    onDelete={handleOptionDelete}
+                                                  />
+                                                ))}
+                                              </div>
+                                            </SortableContext>
+                                          </DndContext>
+                                          <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => {
+                                              const newOptions = [...(field.options || []), '新しい選択肢'];
+                                              handleFieldUpdate(field.id, { options: newOptions });
+                                            }}
+                                            className="w-full h-8 sm:h-9"
+                                          >
+                                            <Plus className="h-3 w-3 mr-1" />
+                                            <span className="text-xs sm:text-sm">選択肢を追加</span>
+                                          </Button>
+                                        </div>
+
+                                          {/* 選択項目の追加設定 */}
+                                          <div className="space-y-2 pt-2 border-t border-gray-200">
+                                            <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                              <div className="space-y-0.5">
+                                                <Label
+                                                  htmlFor={`allowOther-${field.id}`}
+                                                  className="text-sm font-medium cursor-pointer"
+                                                >
+                                                  「その他」オプションを追加
+                                                </Label>
+                                                <p className="text-xs text-muted-foreground">
+                                                  自由入力の「その他」選択肢を追加します
+                                                </p>
+                                              </div>
+                                              <Switch
+                                                id={`allowOther-${field.id}`}
+                                                checked={field.allowOther || false}
+                                                onCheckedChange={(checked: boolean) => handleFieldUpdate(field.id, { allowOther: checked })}
+                                              />
+                                            </div>
+
+                                            {field.type === 'select' && (
+                                              <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                                <div className="space-y-0.5">
+                                                  <Label
+                                                    htmlFor={`multiple-${field.id}`}
+                                                    className="text-sm font-medium cursor-pointer"
+                                                  >
+                                                    複数選択を許可
+                                                  </Label>
+                                                  <p className="text-xs text-muted-foreground">
+                                                    複数の選択肢を同時に選択できるようにします
+                                                  </p>
+                                                </div>
+                                                <Switch
+                                                  id={`multiple-${field.id}`}
+                                                  checked={field.multiple || false}
+                                                  onCheckedChange={(checked: boolean) => handleFieldUpdate(field.id, { multiple: checked })}
+                                                />
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      )}
+                                    </CardContent>
+                                  </Card>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* 項目追加コマンドパレット */}
+                  <div className="mt-6 pt-4 border-t border-gray-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900">項目を追加</h3>
+                        <p className="text-xs text-gray-500">新しい項目をフォームに追加します</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                      {fieldTypes.map((fieldType) => {
+                        const Icon = fieldType.icon;
+                        return (
+                          <Button
+                            key={fieldType.type}
+                            variant="outline"
+                            onClick={() => handleFieldAdd(fieldType.type)}
+                            className="h-auto p-3 flex flex-col items-center space-y-2 hover:bg-primary/5 hover:border-primary/20 transition-all duration-200 hover:scale-105"
+                          >
+                            <Icon className="h-4 w-4 text-primary" />
+                            <div className="text-center">
+                              <div className="text-xs font-medium leading-tight">{fieldType.label}</div>
+                              <div className="text-xs text-muted-foreground leading-tight hidden sm:block">{fieldType.description}</div>
+                            </div>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          </div>
+
+          {/* 右側: 設定パネル */}
+          <div className="space-y-4 sm:space-y-6">
+
+            {/* フォーム設定 */}
+            <FadeIn delay={0.4}>
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base sm:text-lg">フォーム設定</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
+                    フォームの全般的な設定を行います
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-5">
+                  <div className="space-y-3">
+                    <Label className="text-xs sm:text-sm font-medium">基本設定</Label>
+                    <div className="space-y-3">
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <Label
+                            htmlFor="autoReply"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            自動返信
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            フォーム送信時に自動返信メールを送信します
+                          </p>
+                        </div>
+                        <Switch
+                          id="autoReply"
+                          checked={currentForm.settings.autoReply}
+                          onCheckedChange={(checked: boolean) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, autoReply: checked }
+                            })
+                          }
+                        />
+                      </div>
+
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <Label
+                            htmlFor="allowMultipleSubmissions"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            複数回送信を許可
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            同じユーザーが複数回フォームを送信できるようにします
+                          </p>
+                        </div>
+                        <Switch
+                          id="allowMultipleSubmissions"
+                          checked={currentForm.settings.allowMultipleSubmissions || false}
+                          onCheckedChange={(checked: boolean) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, allowMultipleSubmissions: checked }
+                            })
+                          }
+                        />
+                      </div>
+
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <Label
+                            htmlFor="showProgress"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            進捗表示
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            フォームの入力進捗を表示します
+                          </p>
+                        </div>
+                        <Switch
+                          id="showProgress"
+                          checked={currentForm.settings.showProgress || false}
+                          onCheckedChange={(checked: boolean) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, showProgress: checked }
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-xs sm:text-sm font-medium">送信設定</Label>
+                    <div className="space-y-3">
+                      <div>
+                        <Label className="text-xs sm:text-sm">送信完了メッセージ</Label>
+                        <Textarea
+                          value={currentForm.settings.successMessage || '送信が完了しました。ありがとうございます。'}
+                          onChange={(e) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, successMessage: e.target.value }
+                            })
+                          }
+                          className="h-16 sm:h-20 mt-1"
+                          placeholder="送信完了時に表示されるメッセージ"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs sm:text-sm">送信先メールアドレス</Label>
+                        <Input
+                          type="email"
+                          value={currentForm.settings.notificationEmail || ''}
+                          onChange={(e) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, notificationEmail: e.target.value }
+                            })
+                          }
+                          className="h-8 sm:h-9 mt-1"
+                          placeholder="通知先メールアドレス"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-xs sm:text-sm font-medium">表示設定</Label>
+                    <div className="space-y-3">
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <Label
+                            htmlFor="showFieldNumbers"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            項目番号を表示
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            フォーム項目に番号を表示します
+                          </p>
+                        </div>
+                        <Switch
+                          id="showFieldNumbers"
+                          checked={currentForm.settings.showFieldNumbers || false}
+                          onCheckedChange={(checked: boolean) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, showFieldNumbers: checked }
+                            })
+                          }
+                        />
+                      </div>
+
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <Label
+                            htmlFor="requireAllFields"
+                            className="text-sm font-medium cursor-pointer"
+                          >
+                            全項目を必須にする
+                          </Label>
+                          <p className="text-xs text-muted-foreground">
+                            すべての項目を必須入力にします
+                          </p>
+                        </div>
+                        <Switch
+                          id="requireAllFields"
+                          checked={currentForm.settings.requireAllFields || false}
+                          onCheckedChange={(checked: boolean) =>
+                            handleFormChange({
+                              settings: { ...currentForm.settings, requireAllFields: checked }
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          </div>
+        </div>
+      </div>
+
+      {/* フローティングアクションボタン */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="fixed bottom-6 right-6 z-30"
+      >
+        <div className="relative group">
+          <Button
+            size="lg"
+            className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            onClick={() => handleFieldAdd('text')}
+          >
+            <Plus className="h-6 w-6" />
+          </Button>
+          <div className="absolute bottom-16 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+              項目を追加
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* プレビューモーダル */}
+      <AnimatePresence>
+        {showPreview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-2 sm:p-4"
+            onClick={() => setShowPreview(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg sm:text-xl font-bold">プレビュー</h2>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowPreview(false)}
+                    className="h-8 w-8 p-0"
+                  >
+                    ×
+                  </Button>
+                </div>
+                <FormPreview form={currentForm} />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

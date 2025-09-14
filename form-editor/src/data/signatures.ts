@@ -1,0 +1,20 @@
+import { Signature } from '@/shared/types';
+
+export const signatures: Signature[] = [
+    {
+        id: "1",
+        name: "デフォルト署名",
+        content: "お問い合わせありがとうございます。\n\n担当者より改めてご連絡いたします。\n\nよろしくお願いいたします。",
+        isDefault: true,
+        createdAt: "2024-01-01T00:00:00.000Z"
+    },
+    {
+        id: "2",
+        name: "営業部署名",
+        content: "この度はお問い合わせいただき、誠にありがとうございます。\n\n営業部の担当者より、詳細についてご連絡いたします。\n\n何かご不明な点がございましたら、お気軽にお問い合わせください。\n\n営業部",
+        isDefault: false,
+        createdAt: "2024-01-01T00:00:00.000Z"
+    }
+];
+
+export default signatures;

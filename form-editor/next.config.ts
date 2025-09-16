@@ -1,4 +1,12 @@
 import type { NextConfig } from "next";
+import fs from 'fs';
+import path from 'path';
+
+// ログディレクトリの作成
+const logsDir = path.join(__dirname, 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: __dirname,
@@ -21,6 +29,18 @@ const nextConfig: NextConfig = {
   // 画像の最適化
   images: {
     unoptimized: true,
+  },
+  // ログ設定
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  // カスタムログ出力
+  onDemandEntries: {
+    // 開発時のログ出力
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
   },
 };
 

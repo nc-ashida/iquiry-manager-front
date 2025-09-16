@@ -1,0 +1,204 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+              - generic:
+                - generic: フォームエディタ
+                - generic: v1.0.0
+          - generic:
+            - generic:
+              - generic: FORM
+              - generic:
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /
+                      - img
+                      - generic: フォーム管理
+                  - listitem:
+                    - link:
+                      - /url: /signatures
+                      - img
+                      - generic: 署名管理
+            - generic:
+              - generic: MAIL
+              - generic:
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /mail/inbox
+                      - img
+                      - generic: 受信
+                  - listitem:
+                    - link:
+                      - /url: /mail/sent
+                      - img
+                      - generic: 送信
+            - generic:
+              - generic: Settings
+              - generic:
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /help
+                      - img
+                      - generic: ヘルプ
+          - generic:
+            - generic: © 2024 Form Editor
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - button:
+                - generic:
+                  - generic: U
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+              - generic:
+                - heading [level=1]: 受信メール
+                - paragraph: "HP問合せ: 5件 / エミダス: 5件"
+            - generic:
+              - generic: "HP問合せ: 2件未読"
+              - generic: "エミダス: 2件未読"
+          - generic:
+            - generic:
+              - img
+              - textbox
+            - generic:
+              - button [expanded]:
+                - img
+                - generic: フィルター
+        - generic:
+          - tablist:
+            - tab [selected]:
+              - generic: HP問合せシステム
+              - generic: (5)
+            - tab:
+              - generic: エミダスシステム
+              - generic: (5)
+          - tabpanel:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 田中太郎
+                          - generic: (tanaka@example.com)
+                        - generic:
+                          - generic: 高
+                          - generic: お問い合わせ
+                      - heading [level=3]: お問い合わせフォームについて
+                      - paragraph: 先日送信いただいたお問い合わせフォームについて、ご回答いたします。フォームの設定について詳しく説明させていただきます...
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 2024-01-15 14:30
+                        - generic: 未読
+                    - button:
+                      - img
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 佐藤花子
+                          - generic: (sato@example.com)
+                        - generic:
+                          - generic: 中
+                          - generic: 修正依頼
+                      - heading [level=3]: フォームの修正依頼
+                      - paragraph: 現在使用しているフォームに一部修正が必要です。詳細は以下の通りです...
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 2024-01-15 10:15
+                    - button:
+                      - img
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 山田次郎
+                          - generic: (yamada@example.com)
+                        - generic:
+                          - generic: 低
+                          - generic: ご相談
+                      - heading [level=3]: 新規フォーム作成のご相談
+                      - paragraph: 弊社では新しいお問い合わせフォームの作成を検討しており、ご相談させていただきたく...
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 2024-01-14 16:45
+                    - button:
+                      - img
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 鈴木一郎
+                          - generic: (suzuki@example.com)
+                        - generic:
+                          - generic: 高
+                          - generic: エラー報告
+                      - heading [level=3]: フォーム送信エラーについて
+                      - paragraph: フォーム送信時にエラーが発生しており、解決方法をご教示いただけますでしょうか...
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 2024-01-14 09:20
+                        - generic: 未読
+                    - button:
+                      - img
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 高橋美咲
+                          - generic: (takahashi@example.com)
+                        - generic:
+                          - generic: 中
+                          - generic: カスタマイズ
+                      - heading [level=3]: フォームデザインのカスタマイズ
+                      - paragraph: フォームのデザインをカスタマイズしたいのですが、どのような方法がありますか...
+                      - generic:
+                        - generic:
+                          - img
+                          - generic: 2024-01-13 15:30
+                    - button:
+                      - img
+  - button "Open Next.js Dev Tools" [ref=e6] [cursor=pointer]:
+    - img [ref=e7] [cursor=pointer]
+  - alert
+  - menu "フィルター" [active] [ref=e11]:
+    - menuitem "未読のみ" [ref=e12]
+    - 'menuitem "優先度: 高" [ref=e13]'
+    - menuitem "今日" [ref=e14]
+    - menuitem "今週" [ref=e15]
+```

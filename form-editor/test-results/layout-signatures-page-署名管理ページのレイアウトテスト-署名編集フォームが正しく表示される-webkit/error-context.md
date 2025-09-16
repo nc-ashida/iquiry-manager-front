@@ -1,0 +1,64 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e5]:
+    - generic [ref=e7]:
+      - img [ref=e9]
+      - generic [ref=e12]:
+        - generic [ref=e13]: フォームエディタ
+        - generic [ref=e14]: v1.0.0
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]: FORM
+        - list [ref=e19]:
+          - listitem [ref=e20]:
+            - link "フォーム管理" [ref=e21]:
+              - /url: /
+              - img [ref=e22]
+              - generic [ref=e25]: フォーム管理
+          - listitem [ref=e26]:
+            - link "署名管理" [ref=e27]:
+              - /url: /signatures
+              - img [ref=e28]
+              - generic [ref=e33]: 署名管理
+      - generic [ref=e34]:
+        - generic [ref=e35]: MAIL
+        - list [ref=e37]:
+          - listitem [ref=e38]:
+            - link "受信" [ref=e39]:
+              - /url: /mail/inbox
+              - img [ref=e40]
+              - generic [ref=e43]: 受信
+          - listitem [ref=e44]:
+            - link "送信" [ref=e45]:
+              - /url: /mail/sent
+              - img [ref=e46]
+              - generic [ref=e49]: 送信
+      - generic [ref=e50]:
+        - generic [ref=e51]: Settings
+        - list [ref=e53]:
+          - listitem [ref=e54]:
+            - link "ヘルプ" [ref=e55]:
+              - /url: /help
+              - img [ref=e56]
+              - generic [ref=e59]: ヘルプ
+    - generic [ref=e61]: © 2024 Form Editor
+  - main [ref=e62]:
+    - button "U" [ref=e67]:
+      - generic [ref=e69]: U
+    - main [ref=e70]:
+      - generic [ref=e71]:
+        - generic [ref=e74]:
+          - heading "署名管理" [level=1] [ref=e75]
+          - paragraph [ref=e76]: メール署名の作成・編集・管理を行います
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - heading "署名管理" [level=2] [ref=e80]
+            - button "新規署名" [ref=e81]:
+              - img
+              - text: 新規署名
+          - generic [ref=e83]:
+            - paragraph [ref=e84]: 署名が登録されていません。
+            - paragraph [ref=e85]: 新規署名ボタンから署名を作成してください。
+```

@@ -1,0 +1,171 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img [ref=e9]
+        - generic [ref=e12]:
+          - generic [ref=e13]: フォームエディタ
+          - generic [ref=e14]: v1.0.0
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: FORM
+          - list [ref=e19]:
+            - listitem [ref=e20]:
+              - link "フォーム管理" [ref=e21] [cursor=pointer]:
+                - /url: /
+                - img [ref=e22] [cursor=pointer]
+                - generic [ref=e25] [cursor=pointer]: フォーム管理
+            - listitem [ref=e26]:
+              - link "署名管理" [ref=e27] [cursor=pointer]:
+                - /url: /signatures
+                - img [ref=e28] [cursor=pointer]
+                - generic [ref=e33] [cursor=pointer]: 署名管理
+        - generic [ref=e34]:
+          - generic [ref=e35]: MAIL
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "受信" [ref=e39] [cursor=pointer]:
+                - /url: /mail/inbox
+                - img [ref=e40] [cursor=pointer]
+                - generic [ref=e43] [cursor=pointer]: 受信
+            - listitem [ref=e44]:
+              - link "送信" [ref=e45] [cursor=pointer]:
+                - /url: /mail/sent
+                - img [ref=e46] [cursor=pointer]
+                - generic [ref=e49] [cursor=pointer]: 送信
+        - generic [ref=e50]:
+          - generic [ref=e51]: Settings
+          - list [ref=e53]:
+            - listitem [ref=e54]:
+              - link "ヘルプ" [ref=e55] [cursor=pointer]:
+                - /url: /help
+                - img [ref=e56] [cursor=pointer]
+                - generic [ref=e59] [cursor=pointer]: ヘルプ
+      - generic [ref=e61]: © 2024 Form Editor
+    - main [ref=e62]:
+      - button "U" [ref=e67]:
+        - generic [ref=e69]: U
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - img [ref=e75]
+              - generic [ref=e78]:
+                - heading "受信メール" [level=1] [ref=e79]
+                - paragraph [ref=e80]: "HP問合せ: 5件 / エミダス: 5件"
+            - generic [ref=e81]:
+              - generic [ref=e82]: "HP問合せ: 2件未読"
+              - generic [ref=e83]: "エミダス: 2件未読"
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - img [ref=e86]
+              - textbox "メールを検索..." [ref=e89]
+            - button "フィルター" [ref=e91]:
+              - img
+              - generic [ref=e92]: フィルター
+        - generic [ref=e93]:
+          - tablist [ref=e94]:
+            - tab "HP問合せシステム (5)" [selected] [ref=e95]:
+              - generic [ref=e96]: HP問合せシステム
+              - generic [ref=e97]: (5)
+            - tab "エミダスシステム (5)" [ref=e98]:
+              - generic [ref=e99]: エミダスシステム
+              - generic [ref=e100]: (5)
+          - tabpanel "HP問合せシステム (5)" [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e105] [cursor=pointer]:
+                - generic [ref=e106] [cursor=pointer]:
+                  - generic [ref=e107] [cursor=pointer]:
+                    - generic [ref=e108] [cursor=pointer]:
+                      - img [ref=e109] [cursor=pointer]
+                      - generic [ref=e112] [cursor=pointer]: 田中太郎
+                      - generic [ref=e113] [cursor=pointer]: (tanaka@example.com)
+                    - generic [ref=e114] [cursor=pointer]:
+                      - generic [ref=e115] [cursor=pointer]: 高
+                      - generic [ref=e116] [cursor=pointer]: お問い合わせ
+                  - heading "お問い合わせフォームについて" [level=3] [ref=e117] [cursor=pointer]
+                  - paragraph [ref=e118] [cursor=pointer]: 先日送信いただいたお問い合わせフォームについて、ご回答いたします。フォームの設定について詳しく説明させていただきます...
+                  - generic [ref=e119] [cursor=pointer]:
+                    - generic [ref=e120] [cursor=pointer]:
+                      - img [ref=e121] [cursor=pointer]
+                      - generic [ref=e124] [cursor=pointer]: 2024-01-15 14:30
+                    - generic [ref=e125] [cursor=pointer]: 未読
+                - button [ref=e126]:
+                  - img
+              - generic [ref=e129] [cursor=pointer]:
+                - generic [ref=e130] [cursor=pointer]:
+                  - generic [ref=e131] [cursor=pointer]:
+                    - generic [ref=e132] [cursor=pointer]:
+                      - img [ref=e133] [cursor=pointer]
+                      - generic [ref=e136] [cursor=pointer]: 佐藤花子
+                      - generic [ref=e137] [cursor=pointer]: (sato@example.com)
+                    - generic [ref=e138] [cursor=pointer]:
+                      - generic [ref=e139] [cursor=pointer]: 中
+                      - generic [ref=e140] [cursor=pointer]: 修正依頼
+                  - heading "フォームの修正依頼" [level=3] [ref=e141] [cursor=pointer]
+                  - paragraph [ref=e142] [cursor=pointer]: 現在使用しているフォームに一部修正が必要です。詳細は以下の通りです...
+                  - generic [ref=e144] [cursor=pointer]:
+                    - img [ref=e145] [cursor=pointer]
+                    - generic [ref=e148] [cursor=pointer]: 2024-01-15 10:15
+                - button [ref=e149]:
+                  - img
+              - generic [ref=e152] [cursor=pointer]:
+                - generic [ref=e153] [cursor=pointer]:
+                  - generic [ref=e154] [cursor=pointer]:
+                    - generic [ref=e155] [cursor=pointer]:
+                      - img [ref=e156] [cursor=pointer]
+                      - generic [ref=e159] [cursor=pointer]: 山田次郎
+                      - generic [ref=e160] [cursor=pointer]: (yamada@example.com)
+                    - generic [ref=e161] [cursor=pointer]:
+                      - generic [ref=e162] [cursor=pointer]: 低
+                      - generic [ref=e163] [cursor=pointer]: ご相談
+                  - heading "新規フォーム作成のご相談" [level=3] [ref=e164] [cursor=pointer]
+                  - paragraph [ref=e165] [cursor=pointer]: 弊社では新しいお問い合わせフォームの作成を検討しており、ご相談させていただきたく...
+                  - generic [ref=e167] [cursor=pointer]:
+                    - img [ref=e168] [cursor=pointer]
+                    - generic [ref=e171] [cursor=pointer]: 2024-01-14 16:45
+                - button [ref=e172]:
+                  - img
+              - generic [ref=e175] [cursor=pointer]:
+                - generic [ref=e176] [cursor=pointer]:
+                  - generic [ref=e177] [cursor=pointer]:
+                    - generic [ref=e178] [cursor=pointer]:
+                      - img [ref=e179] [cursor=pointer]
+                      - generic [ref=e182] [cursor=pointer]: 鈴木一郎
+                      - generic [ref=e183] [cursor=pointer]: (suzuki@example.com)
+                    - generic [ref=e184] [cursor=pointer]:
+                      - generic [ref=e185] [cursor=pointer]: 高
+                      - generic [ref=e186] [cursor=pointer]: エラー報告
+                  - heading "フォーム送信エラーについて" [level=3] [ref=e187] [cursor=pointer]
+                  - paragraph [ref=e188] [cursor=pointer]: フォーム送信時にエラーが発生しており、解決方法をご教示いただけますでしょうか...
+                  - generic [ref=e189] [cursor=pointer]:
+                    - generic [ref=e190] [cursor=pointer]:
+                      - img [ref=e191] [cursor=pointer]
+                      - generic [ref=e194] [cursor=pointer]: 2024-01-14 09:20
+                    - generic [ref=e195] [cursor=pointer]: 未読
+                - button [ref=e196]:
+                  - img
+              - generic [ref=e199] [cursor=pointer]:
+                - generic [ref=e200] [cursor=pointer]:
+                  - generic [ref=e201] [cursor=pointer]:
+                    - generic [ref=e202] [cursor=pointer]:
+                      - img [ref=e203] [cursor=pointer]
+                      - generic [ref=e206] [cursor=pointer]: 高橋美咲
+                      - generic [ref=e207] [cursor=pointer]: (takahashi@example.com)
+                    - generic [ref=e208] [cursor=pointer]:
+                      - generic [ref=e209] [cursor=pointer]: 中
+                      - generic [ref=e210] [cursor=pointer]: カスタマイズ
+                  - heading "フォームデザインのカスタマイズ" [level=3] [ref=e211] [cursor=pointer]
+                  - paragraph [ref=e212] [cursor=pointer]: フォームのデザインをカスタマイズしたいのですが、どのような方法がありますか...
+                  - generic [ref=e214] [cursor=pointer]:
+                    - img [ref=e215] [cursor=pointer]
+                    - generic [ref=e218] [cursor=pointer]: 2024-01-13 15:30
+                - button [ref=e219]:
+                  - img
+  - button "Open Next.js Dev Tools" [ref=e225] [cursor=pointer]:
+    - img [ref=e226] [cursor=pointer]
+  - alert [ref=e229]
+```

@@ -1,0 +1,62 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e8]:
+          - img [ref=e10]
+          - heading "フォームエディタ" [level=1] [ref=e13]
+        - button "U" [ref=e15]:
+          - generic [ref=e17]: U
+      - navigation [ref=e19]:
+        - link "フォーム管理" [ref=e20]:
+          - /url: /
+          - img [ref=e21]
+          - generic [ref=e24]: フォーム管理
+        - button "メニュー" [ref=e25]:
+          - img [ref=e26]
+          - generic [ref=e27]: メニュー
+    - main [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - heading "フォームを編集" [level=1] [ref=e31]
+          - generic [ref=e32]:
+            - button "キャンセル" [ref=e33]
+            - button "保存" [disabled]
+        - generic [ref=e35]:
+          - tablist [ref=e36]:
+            - tab "設定" [selected] [ref=e37]
+            - tab "フィールド" [ref=e38]
+            - tab "プレビュー" [ref=e39]
+          - tabpanel "設定" [ref=e40]:
+            - generic [ref=e41]:
+              - heading "送信設定" [level=3] [ref=e42]
+              - generic [ref=e43]:
+                - generic [ref=e44]:
+                  - generic [ref=e45]: 完了ページURL
+                  - textbox "https://example.com/thank-you" [ref=e46]
+                  - paragraph [ref=e47]: フォーム送信完了後にリダイレクトするURLを指定してください。空の場合はアラートで完了を通知します。
+                - generic [ref=e48]:
+                  - generic [ref=e49]: 送信控えメールの署名
+                  - combobox [ref=e50]:
+                    - generic: 署名を選択してください
+                    - img
+                  - paragraph [ref=e51]: 送信控えメールに使用する署名を選択してください。
+                - generic [ref=e52]:
+                  - generic [ref=e53]:
+                    - checkbox "送信控えメールを自動送信する" [checked] [ref=e54]
+                    - generic [ref=e55]: 送信控えメールを自動送信する
+                  - paragraph [ref=e56]: チェックを入れると、フォーム送信時に自動で送信控えメールが送信されます。
+                - generic [ref=e57]:
+                  - heading "📧 送信控えメールについて" [level=4] [ref=e58]
+                  - list [ref=e59]:
+                    - listitem [ref=e60]: • 送信控えメールには、フォームの回答内容と選択された署名が含まれます
+                    - listitem [ref=e61]: • 送信者のメールアドレスが正しく入力されている必要があります
+                    - listitem [ref=e62]: • 署名は事前に「署名管理」で登録されたものから選択できます
+                    - listitem [ref=e63]: • 完了ページURLが設定されている場合、送信完了後にそのページにリダイレクトされます
+  - button "Open Next.js Dev Tools" [ref=e69] [cursor=pointer]:
+    - img [ref=e70] [cursor=pointer]
+  - alert [ref=e75]
+```

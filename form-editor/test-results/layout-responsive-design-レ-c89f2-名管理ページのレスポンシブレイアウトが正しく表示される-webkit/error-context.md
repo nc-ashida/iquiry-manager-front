@@ -1,0 +1,90 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img [ref=e9]
+        - generic [ref=e12]:
+          - generic [ref=e13]: フォームエディタ
+          - generic [ref=e14]: v1.0.0
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: FORM
+          - list [ref=e19]:
+            - listitem [ref=e20]:
+              - link "フォーム管理" [ref=e21]:
+                - /url: /
+                - img [ref=e22]
+                - generic [ref=e25]: フォーム管理
+            - listitem [ref=e26]:
+              - link "署名管理" [ref=e27]:
+                - /url: /signatures
+                - img [ref=e28]
+                - generic [ref=e33]: 署名管理
+        - generic [ref=e34]:
+          - generic [ref=e35]: MAIL
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "受信" [ref=e39]:
+                - /url: /mail/inbox
+                - img [ref=e40]
+                - generic [ref=e43]: 受信
+            - listitem [ref=e44]:
+              - link "送信" [ref=e45]:
+                - /url: /mail/sent
+                - img [ref=e46]
+                - generic [ref=e49]: 送信
+        - generic [ref=e50]:
+          - generic [ref=e51]: Settings
+          - list [ref=e53]:
+            - listitem [ref=e54]:
+              - link "ヘルプ" [ref=e55]:
+                - /url: /help
+                - img [ref=e56]
+                - generic [ref=e59]: ヘルプ
+      - generic [ref=e61]: © 2024 Form Editor
+    - main [ref=e62]:
+      - button "U" [ref=e67]:
+        - generic [ref=e69]: U
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e74]:
+            - heading "署名管理" [level=1] [ref=e75]
+            - paragraph [ref=e76]: メール署名の作成・編集・管理を行います
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - heading "署名管理" [level=2] [ref=e80]
+              - button "新規署名" [ref=e81]:
+                - img
+                - text: 新規署名
+            - generic [ref=e82]:
+              - generic [ref=e83]:
+                - generic [ref=e85]:
+                  - generic [ref=e86]:
+                    - generic [ref=e87]: デフォルト署名
+                    - generic [ref=e88]: デフォルト
+                  - generic [ref=e89]:
+                    - button [ref=e90]:
+                      - img
+                    - button [ref=e91]:
+                      - img
+                - generic [ref=e92]:
+                  - generic [ref=e93]: お問い合わせありがとうございます。 担当者より改めてご連絡いたします。 よろしくお願いいたします。
+                  - generic [ref=e94]: "作成日: 2024/1/1"
+              - generic [ref=e95]:
+                - generic [ref=e97]:
+                  - generic [ref=e99]: 営業部署名
+                  - generic [ref=e100]:
+                    - button [ref=e101]:
+                      - img
+                    - button [ref=e102]:
+                      - img
+                - generic [ref=e103]:
+                  - generic [ref=e104]: この度はお問い合わせいただき、誠にありがとうございます。 営業部の担当者より、詳細についてご連絡いたします。 何かご不明な点がございましたら、お気軽にお問い合わせください。 営業部
+                  - generic [ref=e105]: "作成日: 2024/1/1"
+  - button "Open Next.js Dev Tools" [ref=e111] [cursor=pointer]:
+    - img [ref=e112] [cursor=pointer]
+  - alert [ref=e117]
+```

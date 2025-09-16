@@ -145,34 +145,33 @@ export default function FormPreview({ form }: FormPreviewProps) {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 sm:p-6 w-full max-w-full overflow-hidden">
+      <div className="flex justify-between items-center mb-4 sm:mb-6">
         <h3 className="text-lg font-semibold text-foreground">フォームプレビュー</h3>
         <div className="text-base text-muted-foreground">
           {form.fields.length}個の項目
         </div>
       </div>
 
-      <div className="bg-card border border-gray-200 rounded-none p-6">
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-card-foreground mb-2">{form.name}</h2>
+      <div className="bg-card border border-gray-200 rounded-lg p-4 sm:p-6">
+        <div className="w-full">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-card-foreground mb-2">{form.name}</h2>
             {form.description && (
-              <p className="text-muted-foreground">{form.description}</p>
+              <p className="text-muted-foreground text-sm sm:text-base">{form.description}</p>
             )}
           </div>
 
           <div
-            className="form-container bg-white border border-gray-200 rounded-lg"
+            className="form-container bg-white border border-gray-200 rounded-lg w-full"
             style={{
-              maxWidth: '600px',
               margin: '0 auto',
-              padding: '24px',
+              padding: '16px',
               fontFamily: 'Arial, sans-serif',
               backgroundColor: 'hsl(var(--background))',
               border: '1px solid hsl(var(--border))',
-              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-              minHeight: '200px'
+              boxShadow: '0 2px 4px -1px rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+              minHeight: '150px'
             }}
           >
             <form>
@@ -218,17 +217,17 @@ export default function FormPreview({ form }: FormPreviewProps) {
       </div>
 
       {/* 埋め込みコード */}
-      <div className="mt-8">
-        <h4 className="text-md font-semibold text-foreground mb-4">埋め込みコード</h4>
+      <div className="mt-6 sm:mt-8 w-full max-w-full overflow-hidden">
+        <h4 className="text-sm sm:text-md font-semibold text-foreground mb-3 sm:mb-4">埋め込みコード</h4>
 
         {/* コンパクト版（推奨） */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h5 className="text-sm font-medium text-foreground">コンパクト版（推奨）</h5>
-            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">2行で実装</span>
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+            <h5 className="text-xs sm:text-sm font-medium text-foreground">コンパクト版（推奨）</h5>
+            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded w-fit">2行で実装</span>
           </div>
-          <div className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto">
-            <pre className="text-sm">
+          <div className="bg-gray-900 text-gray-100 rounded p-3 sm:p-4 overflow-x-auto">
+            <pre className="text-xs sm:text-sm whitespace-pre-wrap break-words">
               <code>{`<div id="inquiry-form-${form.id}"></div>
 <script src="https://your-domain.com/forms/inquiry-form-${form.id}.js"></script>`}</code>
             </pre>
@@ -241,13 +240,13 @@ export default function FormPreview({ form }: FormPreviewProps) {
         </div>
 
         {/* インライン版 */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h5 className="text-sm font-medium text-foreground">インライン版</h5>
-            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">完全自己完結</span>
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+            <h5 className="text-xs sm:text-sm font-medium text-foreground">インライン版</h5>
+            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded w-fit">完全自己完結</span>
           </div>
-          <div className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto">
-            <pre className="text-sm">
+          <div className="bg-gray-900 text-gray-100 rounded p-3 sm:p-4 overflow-x-auto max-h-64 sm:max-h-96">
+            <pre className="text-xs sm:text-sm whitespace-pre-wrap break-words">
               <code>{`<!-- 問合せフォーム: ${form.name} -->
 <div id="ir-form-${form.id}-container" class="ir-form-container"></div>
 <script>
@@ -461,12 +460,12 @@ export default function FormPreview({ form }: FormPreviewProps) {
 
         {/* 詳細版（開発用） */}
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <h5 className="text-sm font-medium text-foreground">詳細版（開発・デバッグ用）</h5>
-            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">読みやすい</span>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+            <h5 className="text-xs sm:text-sm font-medium text-foreground">詳細版（開発・デバッグ用）</h5>
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded w-fit">読みやすい</span>
           </div>
-          <div className="bg-gray-900 text-gray-100 rounded p-4 overflow-x-auto max-h-96">
-            <pre className="text-sm">
+          <div className="bg-gray-900 text-gray-100 rounded p-3 sm:p-4 overflow-x-auto max-h-48 sm:max-h-96">
+            <pre className="text-xs sm:text-sm whitespace-pre-wrap break-words">
               <code>{`<!-- 問合せフォーム: ${form.name} -->
 <div id="inquiry-form-${form.id}">
   <form id="inquiry-form-${form.id}-form">

@@ -57,6 +57,7 @@ export interface FormSettings {
     showFieldNumbers?: boolean; // 項目番号を表示
     requireAllFields?: boolean; // 全項目を必須にする
     allowedDomains?: string[]; // 問合せ受付許可対象ドメイン
+    recipientEmails?: string[]; // 問合せ送信先メールアドレス一覧
 }
 
 // フォーム定義

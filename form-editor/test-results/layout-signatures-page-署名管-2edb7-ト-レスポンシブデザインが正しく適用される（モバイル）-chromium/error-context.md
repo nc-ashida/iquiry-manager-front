@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e8]:
+          - img [ref=e10]
+          - heading "フォームエディタ" [level=1] [ref=e13]
+        - button "U" [ref=e15]:
+          - generic [ref=e17]: U
+      - navigation [ref=e19]:
+        - link "署名管理" [ref=e20] [cursor=pointer]:
+          - /url: /signatures
+          - img [ref=e21] [cursor=pointer]
+          - generic [ref=e26] [cursor=pointer]: 署名管理
+        - button "メニュー" [ref=e27]:
+          - img [ref=e28]
+          - generic [ref=e29]: メニュー
+    - main [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e34]:
+          - heading "署名管理" [level=1] [ref=e35]
+          - paragraph [ref=e36]: メール署名の作成・編集・管理を行います
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - heading "署名管理" [level=2] [ref=e40]
+            - button "新規署名" [ref=e41]:
+              - img
+              - text: 新規署名
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - generic [ref=e47]: デフォルト署名
+                  - generic [ref=e48]: デフォルト
+                - generic [ref=e49]:
+                  - button [ref=e50]:
+                    - img
+                  - button [ref=e51]:
+                    - img
+              - generic [ref=e52]:
+                - generic [ref=e53]: お問い合わせありがとうございます。 担当者より改めてご連絡いたします。 よろしくお願いいたします。
+                - generic [ref=e54]: "作成日: 2024/1/1"
+            - generic [ref=e55]:
+              - generic [ref=e57]:
+                - generic [ref=e59]: 営業部署名
+                - generic [ref=e60]:
+                  - button [ref=e61]:
+                    - img
+                  - button [ref=e62]:
+                    - img
+              - generic [ref=e63]:
+                - generic [ref=e64]: この度はお問い合わせいただき、誠にありがとうございます。 営業部の担当者より、詳細についてご連絡いたします。 何かご不明な点がございましたら、お気軽にお問い合わせください。 営業部
+                - generic [ref=e65]: "作成日: 2024/1/1"
+  - button "Open Next.js Dev Tools" [ref=e71] [cursor=pointer]:
+    - img [ref=e72] [cursor=pointer]
+  - alert [ref=e75]
+```

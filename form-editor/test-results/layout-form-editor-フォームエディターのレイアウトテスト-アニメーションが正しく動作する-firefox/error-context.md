@@ -1,0 +1,92 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img [ref=e9]
+        - generic [ref=e15]:
+          - generic [ref=e16]: フォームエディタ
+          - generic [ref=e17]: v1.0.0
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: FORM
+          - list [ref=e22]:
+            - listitem [ref=e23]:
+              - link "フォーム管理" [ref=e24] [cursor=pointer]:
+                - /url: /
+                - img [ref=e25] [cursor=pointer]
+                - generic [ref=e28] [cursor=pointer]: フォーム管理
+            - listitem [ref=e29]:
+              - link "署名管理" [ref=e30] [cursor=pointer]:
+                - /url: /signatures
+                - img [ref=e31] [cursor=pointer]
+                - generic [ref=e36] [cursor=pointer]: 署名管理
+        - generic [ref=e37]:
+          - generic [ref=e38]: MAIL
+          - list [ref=e40]:
+            - listitem [ref=e41]:
+              - link "受信" [ref=e42] [cursor=pointer]:
+                - /url: /mail/inbox
+                - img [ref=e43] [cursor=pointer]
+                - generic [ref=e46] [cursor=pointer]: 受信
+            - listitem [ref=e47]:
+              - link "送信" [ref=e48] [cursor=pointer]:
+                - /url: /mail/sent
+                - img [ref=e49] [cursor=pointer]
+                - generic [ref=e52] [cursor=pointer]: 送信
+        - generic [ref=e53]:
+          - generic [ref=e54]: Settings
+          - list [ref=e56]:
+            - listitem [ref=e57]:
+              - link "ヘルプ" [ref=e58] [cursor=pointer]:
+                - /url: /help
+                - img [ref=e59] [cursor=pointer]
+                - generic [ref=e63] [cursor=pointer]: ヘルプ
+      - generic [ref=e65]: © 2024 Form Editor
+    - main [ref=e66]:
+      - button "U" [ref=e71]:
+        - generic [ref=e73]: U
+      - main [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "フォームを編集" [level=1] [ref=e77]
+            - generic [ref=e78]:
+              - button "キャンセル" [ref=e79]
+              - button "保存" [disabled]
+          - generic [ref=e81]:
+            - tablist [ref=e82]:
+              - tab "設定" [selected] [ref=e83]
+              - tab "フィールド" [ref=e84]
+              - tab "プレビュー" [ref=e85]
+            - tabpanel "設定" [ref=e86]:
+              - generic [ref=e87]:
+                - heading "送信設定" [level=3] [ref=e88]
+                - generic [ref=e89]:
+                  - generic [ref=e90]:
+                    - generic [ref=e91]: 完了ページURL
+                    - textbox "https://example.com/thank-you" [ref=e92]
+                    - paragraph [ref=e93]: フォーム送信完了後にリダイレクトするURLを指定してください。空の場合はアラートで完了を通知します。
+                  - generic [ref=e94]:
+                    - generic [ref=e95]: 送信控えメールの署名
+                    - combobox [ref=e96]:
+                      - generic: 署名を選択してください
+                      - img
+                    - paragraph [ref=e97]: 送信控えメールに使用する署名を選択してください。
+                  - generic [ref=e98]:
+                    - generic [ref=e99]:
+                      - checkbox "送信控えメールを自動送信する" [checked] [ref=e100]
+                      - generic [ref=e101]: 送信控えメールを自動送信する
+                    - paragraph [ref=e102]: チェックを入れると、フォーム送信時に自動で送信控えメールが送信されます。
+                  - generic [ref=e103]:
+                    - heading "📧 送信控えメールについて" [level=4] [ref=e104]
+                    - list [ref=e105]:
+                      - listitem [ref=e106]: • 送信控えメールには、フォームの回答内容と選択された署名が含まれます
+                      - listitem [ref=e107]: • 送信者のメールアドレスが正しく入力されている必要があります
+                      - listitem [ref=e108]: • 署名は事前に「署名管理」で登録されたものから選択できます
+                      - listitem [ref=e109]: • 完了ページURLが設定されている場合、送信完了後にそのページにリダイレクトされます
+  - button "Open Next.js Dev Tools" [ref=e115] [cursor=pointer]:
+    - img [ref=e116] [cursor=pointer]
+  - alert [ref=e120]
+```

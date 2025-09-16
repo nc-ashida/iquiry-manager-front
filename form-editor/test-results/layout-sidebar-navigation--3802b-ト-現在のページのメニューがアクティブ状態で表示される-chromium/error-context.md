@@ -1,0 +1,74 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img [ref=e9]
+        - generic [ref=e12]:
+          - generic [ref=e13]: フォームエディタ
+          - generic [ref=e14]: v1.0.0
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: FORM
+          - list [ref=e19]:
+            - listitem [ref=e20]:
+              - link "フォーム管理" [ref=e21] [cursor=pointer]:
+                - /url: /
+                - img [ref=e22] [cursor=pointer]
+                - generic [ref=e25] [cursor=pointer]: フォーム管理
+            - listitem [ref=e26]:
+              - link "署名管理" [ref=e27] [cursor=pointer]:
+                - /url: /signatures
+                - img [ref=e28] [cursor=pointer]
+                - generic [ref=e33] [cursor=pointer]: 署名管理
+        - generic [ref=e34]:
+          - generic [ref=e35]: MAIL
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "受信" [ref=e39] [cursor=pointer]:
+                - /url: /mail/inbox
+                - img [ref=e40] [cursor=pointer]
+                - generic [ref=e43] [cursor=pointer]: 受信
+            - listitem [ref=e44]:
+              - link "送信" [ref=e45] [cursor=pointer]:
+                - /url: /mail/sent
+                - img [ref=e46] [cursor=pointer]
+                - generic [ref=e49] [cursor=pointer]: 送信
+        - generic [ref=e50]:
+          - generic [ref=e51]: Settings
+          - list [ref=e53]:
+            - listitem [ref=e54]:
+              - link "ヘルプ" [ref=e55] [cursor=pointer]:
+                - /url: /help
+                - img [ref=e56] [cursor=pointer]
+                - generic [ref=e59] [cursor=pointer]: ヘルプ
+      - generic [ref=e61]: © 2024 Form Editor
+    - main [ref=e62]:
+      - button "U" [ref=e67]:
+        - generic [ref=e69]: U
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - heading "フォーム管理" [level=1] [ref=e75]
+              - paragraph [ref=e76]: 問合せフォームの作成・編集・管理を行います
+            - button "新しいフォームを作成" [ref=e77]:
+              - img
+              - generic [ref=e78]: 新しいフォームを作成
+          - generic [ref=e80]:
+            - generic [ref=e82]:
+              - img [ref=e83]
+              - textbox "フォーム名、説明、フィールドで検索..." [ref=e86]
+            - generic [ref=e88]:
+              - img [ref=e89]
+              - heading "フォームがありません" [level=3] [ref=e92]
+              - paragraph [ref=e93]: 最初のフォームを作成して開始してください
+              - button "最初のフォームを作成" [ref=e94]:
+                - img
+                - text: 最初のフォームを作成
+  - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+    - img [ref=e101] [cursor=pointer]
+  - alert [ref=e104]
+```

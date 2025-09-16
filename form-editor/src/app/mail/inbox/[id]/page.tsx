@@ -127,6 +127,7 @@ const sampleMessages = [
     },
 ];
 
+
 export default function MailDetailPage() {
     const params = useParams();
     const router = useRouter();

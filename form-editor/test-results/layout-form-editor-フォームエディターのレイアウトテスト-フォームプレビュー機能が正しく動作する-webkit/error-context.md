@@ -1,0 +1,112 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img [ref=e9]
+        - generic [ref=e12]:
+          - generic [ref=e13]: フォームエディタ
+          - generic [ref=e14]: v1.0.0
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: FORM
+          - list [ref=e19]:
+            - listitem [ref=e20]:
+              - link "フォーム管理" [ref=e21]:
+                - /url: /
+                - img [ref=e22]
+                - generic [ref=e25]: フォーム管理
+            - listitem [ref=e26]:
+              - link "署名管理" [ref=e27]:
+                - /url: /signatures
+                - img [ref=e28]
+                - generic [ref=e33]: 署名管理
+        - generic [ref=e34]:
+          - generic [ref=e35]: MAIL
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "受信" [ref=e39]:
+                - /url: /mail/inbox
+                - img [ref=e40]
+                - generic [ref=e43]: 受信
+            - listitem [ref=e44]:
+              - link "送信" [ref=e45]:
+                - /url: /mail/sent
+                - img [ref=e46]
+                - generic [ref=e49]: 送信
+        - generic [ref=e50]:
+          - generic [ref=e51]: Settings
+          - list [ref=e53]:
+            - listitem [ref=e54]:
+              - link "ヘルプ" [ref=e55]:
+                - /url: /help
+                - img [ref=e56]
+                - generic [ref=e59]: ヘルプ
+      - generic [ref=e61]: © 2024 Form Editor
+    - main [ref=e62]:
+      - button "U" [ref=e67]:
+        - generic [ref=e69]: U
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - heading "フォームを編集" [level=1] [ref=e73]
+            - generic [ref=e74]:
+              - button "キャンセル" [ref=e75]
+              - button "保存" [disabled]
+          - generic [ref=e77]:
+            - tablist [ref=e78]:
+              - tab "設定" [ref=e79]
+              - tab "フィールド" [ref=e80]
+              - tab "プレビュー" [active] [selected] [ref=e81]
+            - tabpanel "プレビュー" [ref=e82]:
+              - generic [ref=e83]:
+                - generic [ref=e84]:
+                  - heading "フォームプレビュー" [level=3] [ref=e85]
+                  - generic [ref=e86]: 0個の項目
+                - generic [ref=e88]:
+                  - heading "新しいフォーム" [level=2] [ref=e90]
+                  - button "送信" [disabled] [ref=e93] [cursor=pointer]
+                - generic [ref=e94]:
+                  - heading "埋め込みコード" [level=4] [ref=e95]
+                  - generic [ref=e96]:
+                    - generic [ref=e97]:
+                      - heading "コンパクト版（推奨）" [level=5] [ref=e98]
+                      - generic [ref=e99]: 2行で実装
+                    - code [ref=e102]: <div id="inquiry-form-mfjp5sgnwrvufsrhxib"></div> <script src="https://your-domain.com/forms/inquiry-form-mfjp5sgnwrvufsrhxib.js"></script>
+                    - generic [ref=e103]:
+                      - paragraph [ref=e104]:
+                        - text: •
+                        - strong [ref=e105]: divタグ
+                        - text: ": フォームを表示したい場所に配置"
+                      - paragraph [ref=e106]:
+                        - text: •
+                        - strong [ref=e107]: scriptタグ
+                        - text: ": divタグを探してフォームを自動生成"
+                      - paragraph [ref=e108]: • サーバにホストされたJavaScriptファイルを読み込みます。実装が隠蔽され、コード量が最小限です。
+                  - generic [ref=e109]:
+                    - generic [ref=e110]:
+                      - heading "インライン版" [level=5] [ref=e111]
+                      - generic [ref=e112]: 完全自己完結
+                    - code [ref=e115]: "<!-- 問合せフォーム: 新しいフォーム --> <div id=\"ir-form-mfjp5sgnwrvufsrhxib-container\" class=\"ir-form-container\"></div> <script> (function(){ const f=document.createElement('form'); f.className='ir-form'; f.innerHTML=`<button type=\"submit\" class=\"ir-form-submit\">送信</button>`; f.addEventListener('submit',async e=>{ e.preventDefault(); // ドメイン設定のバリデーション const allowedDomains = [\"localhost:3000\"]; if (!allowedDomains || allowedDomains.length === 0 || allowedDomains.some(domain => !domain.trim())) { alert('エラー: 許可ドメインが設定されていません。フォーム管理者にお問い合わせください。'); return; } const d=new FormData(f); const data={}; for(let[k,v]of d.entries())data[k]=v; try{ const r=await fetch('/api/inquiries',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({formId:'mfjp5sgnwrvufsrhxib',responses:data,senderInfo:{name:data.name||'',email:data.email||'',phone:data.phone||''},allowedDomains:[\"localhost:3000\"]})}); if(r.ok){alert(\"送信完了しました。\");}else{alert(\"送信に失敗しました。\");} }catch(e){console.error('Error:',e);alert(\"送信に失敗しました。\");} }); const container=document.getElementById('ir-form-mfjp5sgnwrvufsrhxib-container'); if(container)container.appendChild(f); })(); </script> <style> /* 名前空間ベースのCSS（衝突を防ぐため） */ .ir-form-container { max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; } .ir-form { display: flex; flex-direction: column; gap: 20px; } .ir-form-field { margin-bottom: 20px; } .ir-form-label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; } .ir-form-input, .ir-form-textarea, .ir-form-select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box; } .ir-form-input:focus, .ir-form-textarea:focus, .ir-form-select:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); } .ir-form-fieldset { border: none; padding: 0; margin: 0; } .ir-form-legend { display: block; margin-bottom: 5px; font-weight: bold; color: #333; } .ir-form-radio-label, .ir-form-checkbox-label { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; } .ir-form-radio, .ir-form-checkbox { margin-right: 8px; } .ir-form-radio-text, .ir-form-checkbox-text { font-size: 14px; } .ir-form-submit { background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; align-self: flex-start; } .ir-form-submit:hover { background-color: #0056b3; } .ir-form-submit:disabled { background-color: #6c757d; cursor: not-allowed; } /* 必須項目のスタイル */ .ir-form-label:has(+ .ir-form-input[required]), .ir-form-legend:has(+ * [required]) { color: #dc3545; } .ir-form-label:has(+ .ir-form-input[required])::after, .ir-form-legend:has(+ * [required])::after { content: \" *\"; color: #dc3545; } /* バリデーションエラーのスタイル */ .ir-form-error { border-color: #dc3545 !important; box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important; } .ir-form-error:focus { border-color: #dc3545 !important; box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important; } .ir-form-error-message { color: #dc3545; font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 4px; } .ir-form-error-message::before { content: \"⚠\"; font-size: 14px; } /* 送信ボタンの状態 */ .ir-form-submit:disabled { background-color: #6c757d; cursor: not-allowed; opacity: 0.7; } /* フォーカス時のアクセシビリティ向上 */ .ir-form-input:focus, .ir-form-textarea:focus, .ir-form-select:focus { outline: 2px solid #007bff; outline-offset: 2px; } /* ラジオボタン・チェックボックスのアクセシビリティ */ .ir-form-radio:focus, .ir-form-checkbox:focus { outline: 2px solid #007bff; outline-offset: 2px; } </style>"
+                    - generic [ref=e116]:
+                      - paragraph [ref=e117]:
+                        - text: •
+                        - strong [ref=e118]: divタグ
+                        - text: ": フォームを表示したい場所に配置"
+                      - paragraph [ref=e119]:
+                        - text: •
+                        - strong [ref=e120]: scriptタグ
+                        - text: ": divタグを探してフォームを自動生成"
+                      - paragraph [ref=e121]: • 完全に自己完結したコードです。外部ファイルに依存しません。
+                  - generic [ref=e122]:
+                    - generic [ref=e123]:
+                      - heading "詳細版（開発・デバッグ用）" [level=5] [ref=e124]
+                      - generic [ref=e125]: 読みやすい
+                    - code [ref=e128]: "<!-- 問合せフォーム: 新しいフォーム --> <div id=\"inquiry-form-mfjp5sgnwrvufsrhxib\"> <form id=\"inquiry-form-mfjp5sgnwrvufsrhxib-form\"> <button type=\"submit\">送信</button> </form> </div> <style> /* 名前空間ベースのCSS（衝突を防ぐため） */ .ir-form-container { max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; } .ir-form { display: flex; flex-direction: column; gap: 20px; } .ir-form-field { margin-bottom: 20px; } .ir-form-label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; } .ir-form-input, .ir-form-textarea, .ir-form-select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box; } .ir-form-input:focus, .ir-form-textarea:focus, .ir-form-select:focus { outline: none; border-color: #007bff; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); } .ir-form-fieldset { border: none; padding: 0; margin: 0; } .ir-form-legend { display: block; margin-bottom: 5px; font-weight: bold; color: #333; } .ir-form-radio-label, .ir-form-checkbox-label { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; } .ir-form-radio, .ir-form-checkbox { margin-right: 8px; } .ir-form-radio-text, .ir-form-checkbox-text { font-size: 14px; } .ir-form-submit { background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; align-self: flex-start; } .ir-form-submit:hover { background-color: #0056b3; } .ir-form-submit:disabled { background-color: #6c757d; cursor: not-allowed; } /* 必須項目のスタイル */ .ir-form-label:has(+ .ir-form-input[required]), .ir-form-legend:has(+ * [required]) { color: #dc3545; } .ir-form-label:has(+ .ir-form-input[required])::after, .ir-form-legend:has(+ * [required])::after { content: \" *\"; color: #dc3545; } /* バリデーションエラーのスタイル */ .ir-form-error { border-color: #dc3545 !important; box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important; } .ir-form-error:focus { border-color: #dc3545 !important; box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25) !important; } .ir-form-error-message { color: #dc3545; font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 4px; } .ir-form-error-message::before { content: \"⚠\"; font-size: 14px; } /* 送信ボタンの状態 */ .ir-form-submit:disabled { background-color: #6c757d; cursor: not-allowed; opacity: 0.7; } /* フォーカス時のアクセシビリティ向上 */ .ir-form-input:focus, .ir-form-textarea:focus, .ir-form-select:focus { outline: 2px solid #007bff; outline-offset: 2px; } /* ラジオボタン・チェックボックスのアクセシビリティ */ .ir-form-radio:focus, .ir-form-checkbox:focus { outline: 2px solid #007bff; outline-offset: 2px; } </style> <script> (function() { const form = document.getElementById('inquiry-form-mfjp5sgnwrvufsrhxib-form'); if (!form) return; form.addEventListener('submit', async function(e) { e.preventDefault(); const formData = new FormData(form); const data = {}; for (let [key, value] of formData.entries()) { data[key] = value; } try { const response = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify({ formId: 'mfjp5sgnwrvufsrhxib', responses: data, senderInfo: { name: data.name || '', email: data.email || '', phone: data.phone || '' } }) }); if (response.ok) { alert(\"送信完了しました。\"); } else { alert(\"送信に失敗しました。\"); } } catch (error) { console.error('Error:', error); alert(\"送信に失敗しました。\"); } }); })(); </script>"
+                    - paragraph [ref=e129]: 開発やデバッグ時に読みやすい形式です。本番環境では推奨されません。
+  - button "Open Next.js Dev Tools" [ref=e135] [cursor=pointer]:
+    - img [ref=e136] [cursor=pointer]
+  - alert [ref=e141]
+```

@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e8]:
+          - img [ref=e10]
+          - heading "フォームエディタ" [level=1] [ref=e13]
+        - button "U" [ref=e15]:
+          - generic [ref=e17]: U
+      - navigation [ref=e19]:
+        - link "フォーム管理" [ref=e20]:
+          - /url: /
+          - img [ref=e21]
+          - generic [ref=e24]: フォーム管理
+        - button "メニュー" [ref=e25]:
+          - img [ref=e26]
+          - generic [ref=e27]: メニュー
+    - main [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - heading "フォーム管理" [level=1] [ref=e33]
+            - paragraph [ref=e34]: 問合せフォームの作成・編集・管理を行います
+          - button "フォーム作成" [ref=e35]:
+            - img
+            - generic [ref=e36]: フォーム作成
+        - generic [ref=e38]:
+          - generic [ref=e40]:
+            - img [ref=e41]
+            - textbox "フォーム名、説明、フィールドで検索..." [ref=e44]
+          - generic [ref=e46]:
+            - img [ref=e47]
+            - heading "フォームがありません" [level=3] [ref=e50]
+            - paragraph [ref=e51]: 最初のフォームを作成して開始してください
+            - button "最初のフォームを作成" [ref=e52]:
+              - img
+              - text: 最初のフォームを作成
+  - button "Open Next.js Dev Tools" [ref=e58] [cursor=pointer]:
+    - img [ref=e59] [cursor=pointer]
+  - alert [ref=e64]
+```
